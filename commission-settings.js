@@ -10,7 +10,7 @@ window.commissionSettings = {
   xProfileUrl: "https://x.com/KDra61",
 
   // preparing（準備中）、open（受付中）、paused（受付停止中）のいずれか。
-  status: "preparing",
+  status: "open",
 
   // 金額は円単位の整数。円記号・桁区切り・引用符は不要。未設定にする場合は null。
   fees: {
