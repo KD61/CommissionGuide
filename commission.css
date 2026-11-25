@@ -234,7 +234,8 @@ body[data-commission-status="open"] .request-link:hover { background: var(--acce
 #status { padding-block: clamp(1.25rem, 2.5vw, 2rem); }
 #pricing { padding-block-start: clamp(1.25rem, 2.5vw, 2rem); }
 
-.guide-section + .guide-section { border-block-start: 1px solid var(--rule); }
+/* 途中に表示されないテンプレートがあっても、2つ目以降の案内欄に区切り線を付ける。 */
+.guide-section ~ .guide-section { border-block-start: 1px solid var(--rule); }
 .guide-section h2 { font-size: clamp(1.375rem, calc(1rem + 0.8vw), 1.625rem); letter-spacing: -0.025em; }
 .section-body { min-inline-size: 0; }
 .section-body h3 { font-size: 1.125rem; }
@@ -426,8 +427,8 @@ body[data-commission-status="open"] .request-link:hover { background: var(--acce
 .terms h3 + ul { margin-block-start: 0.625rem; }
 .terms li + li { margin-block-start: 0.375rem; }
 
-/* 問い合わせ文を注意事項の箇条書きから少し離す。 */
-.terms-contact { margin-block-start: 0.75rem; }
+/* 注意事項がある場合は、その下に共通の区切り線を引いて問い合わせ欄を分ける。 */
+.terms-contact:not(:first-child) { border-block-start: 1px solid var(--rule); padding-block-start: 0.75rem; }
 
 /* 著作権表記の作家名は淡い単色で強調し、リンクの下線と区別する。 */
 .terms .artist-name { padding-inline: 0.15em; box-shadow: inset 0 -0.45em 0 var(--highlight); }

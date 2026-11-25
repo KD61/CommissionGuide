@@ -5,8 +5,8 @@ const commissionTerms = (() => {
   const paymentDeadlineDays = 10;
   const payment = {
     method: {
-      ja: '<span translate="no">PayPal</span>の請求書をお送りします。<span translate="no">PayPal</span>アカウントまたはクレジットカードでお支払いいただけます。',
-      en: 'I’ll send you a <span translate="no">PayPal</span> invoice. You can pay with a <span translate="no">PayPal</span> account or a credit card.'
+      ja: '日本円（JPY）の<span translate="no">PayPal</span>請求書をお送りします（<span translate="no">PayPal</span>アカウント・クレジットカード対応）。',
+      en: 'Payment is in Japanese yen (JPY) via <span translate="no">PayPal</span> invoice (<span translate="no">PayPal</span> account or credit card accepted).'
     },
     deadline: {
       ja: `請求書の発行から<strong>${paymentDeadlineDays}日以内</strong>`,
