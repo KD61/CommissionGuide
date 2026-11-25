@@ -1,0 +1,472 @@
+/* 背景と案内欄をグレーグリーンで揃え、操作には濃い緑を使う。 */
+:root {
+  color-scheme: light;
+  --paper: #f6f8f5;
+  --header: #d7eedb;
+  --header-rule: #6b9c7b;
+  --overview: #e1f0e4;
+  --ink: #1a2c23;
+  --price: #894400;
+  --price-surface: #f6f0de;
+  --price-rule: #d9b778;
+  --muted: #46594e;
+  --note: #56685e;
+  --accent: #176044;
+  --accent-hover: #10472f;
+  --request-hover: #c6e7cf;
+  --highlight: #caecd6;
+  --overview-note: #354a3e;
+  --rule: #bad3c0;
+  --page-width: 70rem;
+  /* 文字を拡大したときも、狭い画面で本文に必要な幅を残す。 */
+  --gutter: min(clamp(1rem, 4vw, 3rem), 5vw);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Windowsでは「Yu Gothic UI」の標準の太さを使い、本文と太字を見分けやすくする。 */
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem / 1.75 "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  overflow-wrap: break-word;
+}
+
+/* 見出しの改行を整え、タッチ操作とピンチ拡大を両立する。 */
+h1, h2, h3, h4, p, dl, ul, ol, pre { margin-block: 0; }
+h1, h2, h3, h4 { line-height: 1.35; text-wrap: balance; }
+button, summary, a { touch-action: manipulation; }
+a { color: var(--accent); text-underline-offset: 0.22em; }
+a:hover { color: var(--accent-hover); }
+
+/* キーボードで操作中の要素と、リンクで移動した項目を見失わないようにする。 */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+::selection { color: var(--ink); background: var(--highlight); }
+[id] { scroll-margin-block-start: 1.25rem; }
+
+/* ヘッダーと本文に同じ最大幅と左右余白を使い、両端を揃える。 */
+.wrap {
+  width: min(var(--page-width), calc(100% - 2 * var(--gutter)));
+  margin-inline: auto;
+}
+
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link:focus {
+  position: absolute;
+  z-index: 1;
+  inset: 0.75rem auto auto var(--gutter);
+  padding: 0.5rem 0.75rem;
+  background: var(--paper);
+}
+
+/* 言語切り替え後は選んだ言語だけを表示し、スクリプトが無効な場合は両言語を読めるようにする。 */
+html[data-language="ja"] .localized[lang="en"],
+html[data-language="en"] .localized[lang="ja"] { display: none; }
+
+/* ヘッダーの背景と下端の線で、本文との境界を示す。 */
+.intro {
+  padding-block: clamp(0.875rem, 2vw, 1.5rem);
+  border-block-end: 2px solid var(--header-rule);
+  background: var(--header);
+}
+
+/* 掲載中のお知らせを、淡い白と緑系の枠を使った横長バナーで示す。 */
+.announcement:not([hidden]) {
+  margin-block-start: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--rule);
+  border-inline-start: 3px solid var(--header-rule);
+  border-radius: 0.25rem;
+  background: #f8faf7;
+  text-align: start;
+  text-wrap: pretty;
+}
+
+/* バナーの注記は本文の下に並べ、グレーで表示する。 */
+.announcement-notes { margin-block-start: 0.25rem; padding: 0; list-style: none; }
+.announcement-notes .note { color: #626262; }
+
+/* タイトルの横に案内を置き、文字拡大時は画面内で折り返せるようにする。 */
+.intro-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) fit-content(75%);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.intro h1 { min-inline-size: 0; font-size: clamp(1.375rem, calc(1rem + 1vw), 1.75rem); font-weight: 700; }
+
+.intro-details { display: flex; flex-wrap: wrap; justify-self: end; justify-content: flex-end; max-inline-size: 100%; align-items: center; gap: 0.5rem 1rem; }
+
+.language-switch:not([hidden]) {
+  display: inline-flex;
+  flex: none;
+  flex-wrap: wrap;
+  max-inline-size: 100%;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.language-switch button {
+  min-block-size: 2.75rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.875rem;
+  /* 選択状態で字幅が変わらないようにする。 */
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.language-switch button[aria-pressed="true"] {
+  background: var(--paper);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.language-switch button:not([aria-pressed="true"]):hover { text-decoration: underline; }
+
+/* 依頼ボタンに必要な幅を取り、受付状況の枠と重ならないようにする。 */
+.status-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 30rem) auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem clamp(1rem, 3vw, 2rem);
+}
+
+/* 作家名と更新日時を横に並べ、長い作家名には使える幅の範囲で省略記号を表示する。 */
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  align-items: baseline;
+  gap: 0.25rem 0.625rem;
+  margin-inline-start: auto;
+  color: var(--overview-note);
+  font-size: 0.875rem;
+}
+
+.page-meta > strong { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.page-meta[hidden] { display: none; }
+
+/* 基本料金と同じ太さの枠線を使い、受付状況に合わせて枠と背景の色を変える。 */
+.availability {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--status-rule, #a6c4da);
+  border-radius: 0.25rem;
+  background: var(--status-surface, #deedf9);
+}
+.overview-note { margin-block-start: 0.375rem; color: var(--overview-note); }
+
+.overview-value { color: var(--status-ink, #294f70); }
+
+/* 受付状態の文字を、基本料金の金額と同じ大きさに揃える。 */
+.overview-value, .base-price-band .amount {
+  font-size: clamp(1.5rem, calc(1.1rem + 1vw), 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+body[data-commission-status="open"] .availability { --status-surface: #d4efdd; --status-ink: #0f5c36; --status-rule: #9bc8a9; }
+body[data-commission-status="paused"] .availability { --status-surface: #fae1df; --status-ink: #823731; --status-rule: #d7a39c; }
+
+/* 設定に合う文言を本来の表示形式で出し、未設定の場合は準備中を表示する。 */
+[data-status-label] { display: none; }
+body:not([data-commission-status="open"], [data-commission-status="paused"]) [data-status-label="preparing"],
+body[data-commission-status="open"] [data-status-label="open"],
+body[data-commission-status="paused"] [data-status-label="paused"] { display: revert; }
+
+/* 依頼方法とXへのリンクを、同じ形と色のボタンで示す。 */
+.request-link, .x-profile-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.375rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.request-link:hover, .x-profile-link:hover { background: var(--request-hover); color: var(--accent-hover); }
+
+/* 依頼ボタンは右端に置き、受付中のみ塗りつぶす。 */
+.request-link { justify-self: end; }
+
+/* 問い合わせ文の下にURLを置き、長いURLも画面の内側で折り返す。 */
+.x-profile-link { max-inline-size: 100%; margin-block-start: 0.625rem; overflow-wrap: anywhere; }
+
+body[data-commission-status="open"] .request-link {
+  background: var(--accent);
+  color: #fff;
+}
+
+body[data-commission-status="open"] .request-link:hover { background: var(--accent-hover); color: #fff; }
+
+/* すべての金額に共通色を使い、円記号と数字は同じ行に収める。 */
+.amount { color: var(--price); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+
+/* 広い画面では見出し列と列間の余白を抑え、各欄の本文を左寄りの同じ位置に揃える。 */
+.guide-section {
+  display: grid;
+  grid-template-columns: minmax(0, 11.5rem) minmax(0, 55rem);
+  gap: clamp(1.5rem, 3vw, 2rem);
+  padding-block: clamp(2.25rem, 6vw, 4.5rem);
+}
+
+/* ページ冒頭で受付状況の次に料金を確認しやすいよう、この2欄の間を詰める。 */
+#status { padding-block: clamp(1.25rem, 2.5vw, 2rem); }
+#pricing { padding-block-start: clamp(1.25rem, 2.5vw, 2rem); }
+
+.guide-section + .guide-section { border-block-start: 1px solid var(--rule); }
+.guide-section h2 { font-size: clamp(1.375rem, calc(1rem + 0.8vw), 1.625rem); letter-spacing: -0.025em; }
+.section-body { min-inline-size: 0; }
+.section-body h3 { font-size: 1.125rem; }
+.section-body > * + * { margin-block-start: 1.25rem; }
+
+/* 説明文は画面幅に合わせて折り返し、文末の短い行を抑える。 */
+.section-body p, .option-note, .terms li, .explanations dd { text-wrap: pretty; }
+
+/* 注釈は一段小さくし、折り返した行も記号の後ろで揃える。 */
+.note { position: relative; padding-inline-start: 1.4em; color: var(--note); font-size: 0.9375rem; }
+.note-mark { position: absolute; inset-inline-start: 0; }
+
+/* 基本料金とオプション料金で枠と背景を揃え、見出しと金額のサイズで区別する。 */
+.base-price-band, .option-list {
+  padding-inline: 0.875rem;
+  border: 1px solid var(--price-rule);
+  border-radius: 0.25rem;
+  background: var(--price-surface);
+}
+
+.section-body h3 + .option-list { margin-block-start: 0.625rem; }
+
+.option-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.25rem 1rem;
+  padding-block: 0.75rem;
+}
+
+.option-list > div + div { border-block-start: 1px solid var(--price-rule); }
+.base-price-band dt, .option-list dt { font-weight: 700; }
+.base-price-band dd, .option-list dd { margin: 0; }
+.option-list .amount { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: 1.125rem; font-weight: 700; }
+
+/* 通常価格は灰色で打ち消し、基本料金は横並び、オプション料金は縦並びにする。 */
+.amount .regular-price, .amount .sale-price { display: block; }
+.amount .regular-price { color: #626262; font-size: 0.75em; font-weight: 400; }
+.base-price-band .amount:has(.sale-price) { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.125rem 0.625rem; }
+.option-list .amount:has(.sale-price) { text-align: end; }
+
+/* 画面には金額だけを出し、通常価格とセール価格の区別は読み上げに残す。 */
+.price-label { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* 基本料金の帯はオプション表と同じ幅で、金額を左に表示する。 */
+.base-price-band { padding-block: 0.625rem; }
+.option-list .option-note { grid-column: 1; }
+.option-note { color: var(--muted); font-size: 0.9375rem; }
+
+/* ブラウザ標準の開閉を使い、行の背景色と右端の記号で操作箇所を示す。 */
+.disclosure { border: 1px solid transparent; border-block-color: var(--rule); }
+.disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-block-size: 2.75rem;
+  padding: 0.75rem;
+  background: var(--overview);
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.disclosure summary::-webkit-details-marker { display: none; }
+.disclosure summary:hover { background: #d1ded3; }
+.disclosure summary:hover .disclosure-label { text-decoration: underline; text-underline-offset: 0.18em; }
+
+/* 開いた見出しと詳細を一つの枠に収め、次の本文との境界を明確にする。 */
+.disclosure[open] { border-color: var(--rule); background: var(--overview); }
+.disclosure[open] summary { border-block-end: 1px solid var(--rule); }
+
+/* 強制カラーモードでも残る枠線で「＋」を描き、展開時は横線だけにする。 */
+.disclosure-icon {
+  position: relative;
+  flex: none;
+  inline-size: 1.375rem;
+  block-size: 1.375rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+}
+
+.disclosure-icon::before, .disclosure-icon::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+}
+
+.disclosure-icon::before { inline-size: 0.625rem; border-block-start: 2px solid currentColor; }
+.disclosure-icon::after { block-size: 0.625rem; border-inline-start: 2px solid currentColor; }
+.disclosure[open] .disclosure-icon::after { display: none; }
+
+.disclosure-body { padding: 0.875rem 0.75rem 1rem; }
+.disclosure-body > * + * { margin-block-start: 0.875rem; }
+
+/* 補足と依頼項目では説明をラベルの直後に置く。 */
+.explanations { display: grid; gap: 0.75rem; }
+.explanations dt { font-weight: 700; }
+.explanations dd { margin-inline-start: 0; }
+/* 薄い灰色のコード欄を基準に、コピーボタンを右上へ重ねる。 */
+.template-box {
+  position: relative;
+  margin-block-start: 0.625rem;
+  padding: 0.875rem;
+  border: 1px solid #c5ccc3;
+  border-radius: 0.375rem;
+  background: #eff1ee;
+}
+
+.template-copy:not([hidden]) {
+  display: flex;
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+}
+
+.copy-template {
+  min-block-size: 2rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid #68736e;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: #25362d;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* タッチ操作ではボタンを押しやすい大きさにする。 */
+@media (pointer: coarse) {
+  .copy-template { min-inline-size: 2.75rem; min-block-size: 2.75rem; }
+}
+
+.copy-template:hover { background: #d1d8d4; }
+
+/* 開閉見出しとの余白に、一行のコピー通知を重ねて表示する。 */
+.copy-status {
+  position: absolute;
+  inset-block-end: calc(100% + 0.25rem);
+  inset-inline-end: 0;
+  pointer-events: none;
+}
+
+.copy-status:not(:empty) {
+  inline-size: max-content;
+  max-inline-size: min(10rem, calc(100vw - 5.5rem));
+  overflow: hidden;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid #9eb3a4;
+  border-radius: 0.25rem;
+  background: #dce8de;
+  color: #264436;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-fallback { display: block; font-size: 0.875rem; }
+.copy-fallback:not(:empty) { margin-block-start: 0.5rem; }
+
+.template {
+  font: 0.875rem / 1.65 ui-monospace, "Cascadia Mono", Consolas, "Hiragino Sans", "Yu Gothic", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.template code { font: inherit; }
+
+/* ボタンの横に来る先頭行だけ、ボタンと重ならない幅で改行する。 */
+.template-copy:not([hidden]) ~ .template .template-title {
+  display: inline-block;
+  max-inline-size: calc(100% - 4.25rem);
+  vertical-align: top;
+}
+
+/* 工程を上から順に読み、各段階で必要な日数を確認できるようにする。 */
+.steps { padding-inline-start: 1.75rem; }
+.steps li { padding: 0.75rem 0 0.75rem 0.375rem; }
+.steps li + li { border-block-start: 1px solid var(--rule); }
+.steps li::marker { color: var(--accent); font-weight: 700; }
+.steps h3 + p { margin-block-start: 0.375rem; }
+
+/* 注意事項は見出しのまとまりと箇条書きの間に余白を取り、順に読みやすくする。 */
+.terms { display: grid; gap: 1.75rem; }
+.terms ul, .subject-list ul { padding-inline-start: 1.375rem; }
+.terms h3 + ul { margin-block-start: 0.625rem; }
+.terms li + li { margin-block-start: 0.375rem; }
+
+/* 問い合わせ文を注意事項の箇条書きから少し離す。 */
+.terms-contact { margin-block-start: 0.75rem; }
+
+/* 著作権表記の作家名は淡い単色で強調し、リンクの下線と区別する。 */
+.terms .artist-name { padding-inline: 0.15em; box-shadow: inset 0 -0.45em 0 var(--highlight); }
+
+/* 対応範囲は上辺と見出しの緑・赤で区別し、片方だけ表示する場合は横幅を使い切る。 */
+.subjects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem; margin-block-start: 0.75rem; }
+.subjects + .note { margin-block-start: 0.75rem; }
+.subject-list { padding: 0.75rem; border: 1px solid var(--rule); border-block-start: 3px solid var(--subject-ink); background: var(--subject-surface); }
+.subject-list h4 { color: var(--subject-ink); font-size: 1rem; }
+.subject-list ul { margin-block-start: 0.35rem; }
+.do-list { --subject-ink: #17613a; --subject-surface: #f7fbf8; }
+.dont-list { --subject-ink: #a32c3b; --subject-surface: #fdf7f7; }
+
+/* 中幅ではヘッダーの余白を詰め、本文を一列にする。 */
+@media (max-width: 50rem) {
+  .intro { padding-block: 0.5rem; line-height: 1.45; }
+  .intro-tools { row-gap: 0.25rem; }
+  .guide-section, .subjects { grid-template-columns: minmax(0, 1fr); }
+  .guide-section { gap: 1.5rem; }
+}
+
+/* スマートフォンでは依頼ボタンを受付状況の直下に置く。 */
+@media (max-width: 44rem) {
+  /* 言語ボタンはタイトルと左端を揃え、作家名と更新日時は右側に置く。 */
+  .intro-tools { grid-template-columns: minmax(0, 1fr); }
+  .intro-details { justify-self: stretch; justify-content: space-between; column-gap: 0.625rem; }
+  .language-switch button { padding-inline: 0.5rem; }
+
+  .status-layout { grid-template-columns: minmax(0, 1fr); }
+  .request-link { justify-self: start; }
+
+  /* 金額を項目名と同じ段に置き、説明は次の段で横幅全体を使う。 */
+  .option-list .amount { grid-row: 1; }
+  .option-list .option-note { grid-column: 1 / -1; }
+}
+
+/* 狭い画面では更新のラベルを読み上げ用に残し、横の余白を詰める。 */
+@media (max-width: 30rem) {
+  .page-meta { column-gap: 0.375rem; font-size: 0.75rem; }
+  .language-switch button { padding-inline: 0.25rem; font-size: 0.8125rem; }
+  .update-label { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
+}

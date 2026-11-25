@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#d7eedb">
+  <meta name="description" content="イラストのご依頼受付状況、料金、依頼方法をご案内します。 Check illustration commission availability, pricing, and how to request.">
+  <!-- 共有時は、表示言語の指定にかかわらず日英両方でページを案内する。 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="コミッション案内 / Commission Guide">
+  <meta property="og:description" content="イラストのご依頼受付状況、料金、依頼方法をご案内します。 Check illustration commission availability, pricing, and how to request.">
+  <meta name="twitter:card" content="summary">
+  <title>コミッション案内</title>
+  <link rel="stylesheet" href="commission.css">
+  <!-- 受付状況・料金・お知らせと注意事項の設定を、表示処理より先に読み込む。 -->
+  <script src="commission-settings.js" defer></script>
+  <script src="commission-terms.js" defer></script>
+  <script src="commission.js" defer></script>
+</head>
+<body>
+  <!-- キーボード利用者が概要を飛ばして本文へ進めるようにする。 -->
+  <a class="skip-link" href="#rendered-md">
+    <span class="localized" lang="ja">本文へ移動</span> <span class="localized" lang="en">Skip to content</span>
+  </a>
+
+  <!-- ページ名、表示言語、作家名と更新日時をまとめる。 -->
+  <header class="intro">
+    <div class="wrap">
+      <div class="intro-tools">
+        <h1><span class="localized" lang="ja">コミッション案内</span> <span class="localized" lang="en">Commission Guide</span></h1>
+        <div class="intro-details">
+          <div class="language-switch" role="group" aria-label="表示言語" hidden>
+            <button type="button" lang="ja" data-select-language="ja" aria-pressed="true">日本語</button>
+            <button type="button" lang="en" data-select-language="en" aria-pressed="false">English</button>
+          </div>
+          <!-- 作家名と更新日時は commission-settings.js から反映する。 -->
+          <p class="page-meta" hidden>
+            <strong id="artist-name" translate="no" hidden></strong>
+            <span class="page-updated" hidden><span class="update-label" lang="en" translate="no">Updated</span> <time translate="no"></time></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- commission-settings.js の告知本文と注記を、言語ごとにまとめて表示する。 -->
+  <aside class="wrap announcement" aria-label="お知らせ" hidden>
+    <div class="localized" lang="ja">
+      <p data-announcement-text="ja"></p>
+      <ul class="announcement-notes" role="list" hidden></ul>
+    </div>
+    <div class="localized" lang="en">
+      <p data-announcement-text="en"></p>
+      <ul class="announcement-notes" role="list" hidden></ul>
+    </div>
+  </aside>
+
+  <main id="rendered-md" class="wrap" tabindex="-1">
+    <!-- 受付状況と依頼方法へのリンクを、料金に先立つ独立した欄にまとめる。 -->
+    <section class="guide-section" id="status" aria-labelledby="status-heading">
+      <h2 id="status-heading"><span class="localized" lang="ja">受付状況</span> <span class="localized" lang="en">Commission status</span></h2>
+      <div class="section-body">
+        <div class="status-layout">
+          <div class="availability">
+            <p class="overview-value">
+              <span data-status-label="preparing"><span class="localized" lang="ja">準備中</span> <span class="localized" lang="en">Preparing to open</span></span>
+              <span data-status-label="open"><span class="localized" lang="ja">受付中</span> <span class="localized" lang="en">Open</span></span>
+              <span data-status-label="paused"><span class="localized" lang="ja">受付停止中</span> <span class="localized" lang="en">Paused</span></span>
+            </p>
+            <p class="overview-note" data-status-label="preparing"><span class="localized" lang="ja">受付開始後にご依頼・ご相談ください。</span> <span class="localized" lang="en">Please wait until commissions open to send a request or inquiry.</span></p>
+            <p class="overview-note" data-status-label="paused"><span class="localized" lang="ja">受付再開後にご依頼・ご相談ください。</span> <span class="localized" lang="en">Please wait until commissions reopen to send a request or inquiry.</span></p>
+          </div>
+          <a class="request-link" href="#request">
+            <span class="localized" lang="ja">依頼方法を見る</span> <span class="localized" lang="en">See how to request</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 基本料金を示したうえで、追加できるオプションと見積もりの流れを案内する。 -->
+    <section class="guide-section" id="pricing" aria-labelledby="料金-fee">
+      <h2 id="料金-fee"><span class="localized" lang="ja">料金</span> <span class="localized" lang="en">Pricing</span></h2>
+      <div class="section-body">
+        <!-- 受付状況に続けて基本料金を読めるように、料金欄の先頭に置く。 -->
+        <dl class="base-price-band">
+          <dt><span class="localized" lang="ja">基本料金</span> <span class="localized" lang="en">Base fee (JPY)</span></dt>
+          <dd class="amount" data-fee="base" aria-describedby="pricing-price-help">—</dd>
+          <dd class="option-note"><span class="localized" lang="ja">キャラクター1体と、単色などのシンプルな背景。</span> <span class="localized" lang="en">One character with a simple background, such as a solid color.</span></dd>
+        </dl>
+        <h3 id="オプション-options"><span class="localized" lang="ja">オプション料金</span> <span class="localized" lang="en">Add-on prices</span></h3>
+        <!-- 旧「オプションの詳細」へのリンクは、条件をまとめた料金表の先頭に着地させる。 -->
+        <dl class="option-list" id="add-on-details">
+          <div id="各オプションについて-about-each-options">
+            <dt><span class="localized" lang="ja">キャラクター追加</span> <span class="localized" lang="en">Additional character</span></dt>
+            <dd class="amount" data-fee="character" aria-describedby="pricing-price-help">—</dd>
+            <dd class="option-note"><span class="localized" lang="ja"><strong>2体まで</strong>追加できます（<strong>合計3体まで</strong>）。顔が見えるか、体の半分以上を描く場合は1体と数え、1体ごとに加算します。</span> <span class="localized" lang="en">Charged per extra character, <strong>up to 2 extras (3 characters total)</strong>. A character counts if their face is visible or at least half their body is drawn.</span></dd>
+          </div>
+          <div>
+            <dt><span class="localized" lang="ja">背景</span> <span class="localized" lang="en">Background</span></dt>
+            <dd class="amount" data-fee="background" aria-describedby="pricing-price-help">—</dd>
+            <dd class="option-note"><span class="localized" lang="ja">簡単なイラスト背景を追加します。細かな描写はできません。</span> <span class="localized" lang="en">I can add a simple illustrated background. I don’t offer detailed backgrounds.</span></dd>
+          </div>
+          <div>
+            <dt><span class="localized" lang="ja">差分</span> <span class="localized" lang="en">Minor variation</span></dt>
+            <dd class="amount" data-fee="variation" aria-describedby="pricing-price-help">—</dd>
+            <dd class="option-note">
+              <span class="localized" lang="ja">構図を保ち、表情や小物などを変えます。元絵とは別に<strong>5種まで</strong>追加できます。<strong>1種目は無料</strong>で、以降は1種ごとに加算します。</span>
+              <span class="localized" lang="en">Change details like expressions or props without changing the composition. <strong>Up to 5 variations beyond the original</strong>. <strong>The first is free</strong>, and each additional one costs extra.</span>
+            </dd>
+          </div>
+          <div>
+            <dt><span class="localized" lang="ja">別パターン</span> <span class="localized" lang="en">Alternative version</span></dt>
+            <dd class="amount" data-fee="alternative" aria-describedby="pricing-price-help">—</dd>
+            <dd class="option-note"><span class="localized" lang="ja">別アングルや続きの場面など、構図や場面を大きく変えます。元絵とは別に<strong>2種まで</strong>で、1種ごとに加算します。</span> <span class="localized" lang="en">A major change in composition or scene, such as a new angle or a follow-up scene. <strong>Up to 2 versions beyond the original</strong>, charged per version.</span></dd>
+          </div>
+        </dl>
+        <p class="note price-help" id="pricing-price-help"><span class="note-mark" aria-hidden="true">※</span><span class="localized" lang="ja">金額が表示されていない項目は、受付中にXのDMでご確認ください。</span> <span class="localized" lang="en">When commissions are open, please ask via X DM for any prices not shown.</span></p>
+
+        <!-- 料金を確認したあとに、注意事項と共通の支払い方法を案内する。 -->
+        <p><span class="localized" lang="ja">お支払いは日本円（JPY）です。<span data-payment-copy="method" lang="ja"></span>基本料金とオプション料金の見積もりは、受付確定前にお知らせします。</span> <span class="localized" lang="en">Payment is in Japanese yen (JPY). <span data-payment-copy="method" lang="en"></span> I’ll send a quote covering the base fee and any add-ons before confirming your commission.</span></p>
+        <p class="note"><span class="note-mark" aria-hidden="true">※</span><span class="localized" lang="ja">料金は予告なく変更される場合があります。</span> <span class="localized" lang="en">Prices may change without notice.</span></p>
+      </div>
+    </section>
+
+    <!-- セール対象の金額に通常価格とセール価格を表示する。 -->
+    <template id="sale-price-template">
+      <span class="regular-price"><span class="localized price-label" lang="ja">通常価格</span> <span class="localized price-label" lang="en">Regular price</span> <s></s></span>
+      <span class="sale-price"><span class="localized price-label" lang="ja">セール価格</span> <span class="localized price-label" lang="en">Sale price</span> <span data-sale-amount></span></span>
+    </template>
+
+    <!-- 必須事項を先に示し、テンプレートと任意項目の説明をまとめて開けるようにする。 -->
+    <section class="guide-section" id="request" aria-labelledby="依頼方法について-about-request">
+      <h2 id="依頼方法について-about-request"><span class="localized" lang="ja">依頼方法</span> <span class="localized" lang="en">How to request</span></h2>
+      <div class="section-body">
+        <p><span class="localized" lang="ja">受付中はXのDMでご依頼ください。書式は自由です。最初に「イラスト依頼」などと書き、描いてほしい内容を教えてください。</span> <span class="localized" lang="en">When commissions are open, start your X DM by saying it’s an illustration commission request, then describe what you’d like me to draw. Any message format is fine.</span></p>
+        <!-- ご依頼の前に、対応できる内容をすぐ確認できるようにする。 -->
+        <section id="subjects" aria-labelledby="描くもの描かないもの-will-draw-wont-draw">
+          <h3 id="描くもの描かないもの-will-draw-wont-draw"><span class="localized" lang="ja">描けるもの・描けないもの</span> <span class="localized" lang="en">What I will and won’t draw</span></h3>
+          <!-- commission-settings.js から、ページの表示言語に合う項目を表示する。 -->
+          <div class="subjects">
+            <div class="subject-list do-list">
+              <h4><span class="localized" lang="ja">描けるもの</span> <span class="localized" lang="en">Will draw</span></h4>
+              <ul class="localized" lang="ja" data-subject-list="willDraw" hidden></ul>
+              <ul class="localized" lang="en" data-subject-list="willDraw" hidden></ul>
+            </div>
+            <div class="subject-list dont-list">
+              <h4><span class="localized" lang="ja">描けないもの</span> <span class="localized" lang="en">Won’t draw</span></h4>
+              <ul class="localized" lang="ja" data-subject-list="wontDraw" hidden></ul>
+              <ul class="localized" lang="en" data-subject-list="wontDraw" hidden></ul>
+            </div>
+          </div>
+          <p class="note"><span class="note-mark" aria-hidden="true">※</span><span class="localized" lang="ja">記載のない内容でも対応できる場合があります。受付中にXのDMでご相談ください。</span> <span class="localized" lang="en">I may be able to draw subjects that aren’t listed. Please ask via X DM when commissions are open.</span></p>
+        </section>
+        <details class="disclosure" id="dm-template">
+          <summary>
+            <span class="disclosure-label"><span class="localized" lang="ja">DM用テンプレートと記入項目</span> <span class="localized" lang="en">DM template and field guide</span></span>
+            <span class="disclosure-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="disclosure-body">
+            <!-- コピーする言語のテンプレートを、操作ボタンと同じ領域に表示する。 -->
+            <div class="template-box">
+              <div class="template-copy" hidden>
+                <button type="button" class="copy-template"><span class="localized" lang="ja">コピー</span> <span class="localized" lang="en">Copy</span></button>
+                <span class="copy-status" role="status"></span>
+              </div>
+              <pre class="template localized" lang="ja" data-template-language="ja" translate="no"><code><span class="template-title">イラストのご依頼</span>
+
+［ご依頼内容］（必須）
+
+［希望オプション］（任意）
+
+［参考画像］（任意）
+
+［宛名］（任意）
+
+［その他の希望］（任意）</code></pre>
+              <pre class="template localized" lang="en" data-template-language="en" translate="no"><code><span class="template-title">Illustration commission request</span>
+
+[Commission details] (required)
+
+[Requested add-ons] (optional)
+
+[Reference images] (optional)
+
+[Your name on the artwork] (optional)
+
+[Other requests] (optional)</code></pre>
+              <span class="copy-fallback" role="status"></span>
+            </div>
+            <p><span class="localized" lang="ja">任意の項目は空欄のままでも、削除しても構いません。</span> <span class="localized" lang="en">You can leave optional fields blank or delete them.</span></p>
+            <dl class="explanations">
+              <div>
+                <dt><span class="localized" lang="ja">ご依頼内容（必須）</span> <span class="localized" lang="en">Commission details (required)</span></dt>
+                <dd><span class="localized" lang="ja">描いてほしいキャラクターやモチーフ、特徴をお書きください。ポーズ・構図・場面は指定しても、お任せでも大丈夫です。</span> <span class="localized" lang="en">Describe the character or subject and their features. You can also specify the pose, composition, or scene here. I’ll choose those details if you leave them open.</span></dd>
+              </div>
+              <div>
+                <dt><span class="localized" lang="ja">希望オプション（任意）</span> <span class="localized" lang="en">Requested add-ons (optional)</span></dt>
+                <dd><span class="localized" lang="ja">希望するオプションの種類と数をお書きください。差分や別パターンをご希望の場合は、変更したい内容もお知らせください。</span> <span class="localized" lang="en">List the add-ons you’d like and the quantity for each. For variations or alternative versions, describe what you’d like changed.</span></dd>
+              </div>
+              <div>
+                <dt><span class="localized" lang="ja">参考画像（任意）</span> <span class="localized" lang="en">Reference images (optional)</span></dt>
+                <dd><span class="localized" lang="ja">キャラクターやポーズなどの参考画像があれば、DMに添付するかURLをお送りください。</span> <span class="localized" lang="en">Attach any reference images for the character, pose, or other details to your DM, or send links to them.</span></dd>
+              </div>
+              <div>
+                <dt><span class="localized" lang="ja">宛名（任意）</span> <span class="localized" lang="en">Your name on the artwork (optional)</span></dt>
+                <dd><span class="localized" lang="ja">イラストに宛名を入れてほしい場合は、お名前をお書きください。</span> <span class="localized" lang="en">If you’d like your name written on the artwork, include it here.</span></dd>
+              </div>
+              <div>
+                <dt><span class="localized" lang="ja">その他の希望（任意）</span> <span class="localized" lang="en">Other requests (optional)</span></dt>
+                <dd><span class="localized" lang="ja">作品の非公開や、特定のファイル形式をご希望の場合はお書きください。</span> <span class="localized" lang="en">Tell me if you’d like the artwork kept private or if you have a preferred file format.</span></dd>
+              </div>
+            </dl>
+          </div>
+        </details>
+        <!-- 受付から納品までの手順は、必要なときに展開して確認できるようにする。 -->
+        <details class="disclosure" id="process">
+          <summary id="ご依頼の流れ-commission-process">
+            <span class="disclosure-label"><span class="localized" lang="ja">依頼の流れ</span> <span class="localized" lang="en">Commission process</span></span>
+            <span class="disclosure-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="disclosure-body">
+            <ol class="steps">
+              <li>
+                <h3><span class="localized" lang="ja">依頼受付</span> <span class="localized" lang="en">Request</span></h3>
+                <p><span class="localized" lang="ja">受付中にXのDMでご依頼内容をお送りください。内容を確認し、対応できる場合は受付確定前にお見積もりをお送りします。</span> <span class="localized" lang="en">Send your commission details via X DM when commissions are open. If I can take the request, I’ll send you a quote before confirming the commission.</span></p>
+              </li>
+              <li>
+                <h3><span class="localized" lang="ja">ラフの作成と確認</span> <span class="localized" lang="en">Sketch and approval</span></h3>
+                <p><span class="localized" lang="ja">受付確定から<strong>1週間以内</strong>を目安にラフをお送りします。内容をご確認ください。</span> <span class="localized" lang="en">I aim to send the sketch for approval <strong>within 1 week</strong> of confirming the commission.</span></p>
+              </li>
+              <li>
+                <h3><span class="localized" lang="ja">お支払い</span> <span class="localized" lang="en">Payment</span></h3>
+                <!-- 注意事項の期限を表示し、設定を読み込めない場合は請求書の期限を案内する。 -->
+                <p><span class="localized" lang="ja">ラフ承認後、<span data-payment-copy="deadline" lang="ja">請求書に記載の期限まで</span>にお支払いください。</span> <span class="localized" lang="en">After approving the sketch, please pay <span data-payment-copy="deadline" lang="en">by the due date stated on the invoice</span>.</span></p>
+              </li>
+              <li>
+                <h3><span class="localized" lang="ja">完成品の納品</span> <span class="localized" lang="en">Final delivery</span></h3>
+                <p><span class="localized" lang="ja">入金確認から<strong>1か月以内</strong>を目安に完成品をお送りします。</span> <span class="localized" lang="en">I aim to deliver the finished artwork <strong>within 1 month</strong> of receiving payment.</span></p>
+              </li>
+            </ol>
+            <p class="note"><span class="note-mark" aria-hidden="true">※</span><span class="localized" lang="ja">制作・納品の目安は状況により変動します。遅れる場合は事前にご連絡します。</span> <span class="localized" lang="en">Turnaround times depend on my schedule. I’ll let you know in advance about any delays.</span></p>
+          </div>
+        </details>
+        <p><span class="localized" lang="ja">ご依頼の前に、下の注意事項をご確認ください。</span> <span class="localized" lang="en">Please read the terms below before sending your request.</span></p>
+      </div>
+    </section>
+
+    <!-- commission-terms.js の日英の注意事項を表示し、未読込時は案内を残す。 -->
+    <section class="guide-section" id="terms" aria-labelledby="注意事項の詳細-details-of-important-notes">
+      <h2 id="注意事項の詳細-details-of-important-notes"><span class="localized" lang="ja">注意事項</span> <span class="localized" lang="en">Terms</span></h2>
+      <div class="section-body">
+        <div class="terms">
+          <p><span class="localized" lang="ja">注意事項を表示するには、JavaScriptを有効にしてください。</span> <span class="localized" lang="en">Enable JavaScript to read the commission terms.</span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
