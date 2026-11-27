@@ -27,15 +27,15 @@ const commissionTerms = (() => {
             en: "<strong>For personal use only.</strong> Please ask me about other uses."
           },
           {
-            ja: "完成作品はSNSで公開することがあります。ご依頼時に非公開をご希望の場合は、<strong>追加料金なし</strong>で対応します。",
-            en: "I may share finished artwork on social media. If you ask when sending your request, I’ll keep it private <strong>at no extra charge</strong>."
+            ja: "完成作品はSNSで公開することがあります。ご依頼時に非公開をご希望の場合は、追加料金なしで対応します。",
+            en: "I may share finished artwork on social media. If you ask when sending your request, I’ll keep it private at no extra charge."
           },
           {
-            ja: "ラフ承認後は<strong>ご自身の都合でキャンセル</strong>できません。お支払い後は、こちらの都合で制作できないときだけ返金します。",
-            en: "You can’t <strong>cancel for personal reasons</strong> after approving the sketch. Payments are non-refundable. If I’m unable to finish the commission for reasons on my end, I’ll refund your payment."
+            ja: "<strong>ラフ承認後はご自身の都合でキャンセルできません。</strong>お支払い後は、こちらの都合で制作できないときだけ返金します。",
+            en: "You can’t <strong>cancel for personal reasons after approving the sketch</strong>. Payments are non-refundable. If I’m unable to finish the commission for reasons on my end, I’ll refund your payment."
           },
           {
-            ja: '著作権は <strong class="artist-name" data-artist-name>作家</strong> に帰属します。',
+            ja: '著作権は <strong class="artist-name" data-artist-name>制作者</strong> に帰属します。',
             en: 'Copyright remains with <strong class="artist-name" data-artist-name>the artist</strong>.'
           },
           {

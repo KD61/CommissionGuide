@@ -4,7 +4,7 @@ window.commissionSettings = {
   artistName: "K-Dra61",
 
   // 更新日時は日本時間で YYYY-MM-DD HH:mm の形式で入力する。
-  updatedAt: "2026-11-26 00:45",
+  updatedAt: "2026-11-27 22:44",
 
   // XのプロフィールURL（例: https://x.com/ユーザー名）。空欄の場合はリンクを表示しない。
   xProfileUrl: "https://x.com/KDra61",
@@ -44,8 +44,8 @@ window.commissionSettings = {
     en: "Commission guide launch sale: **12% off**",
     // notes には注記を1項目ずつ入力する。各行の「※」は自動で表示する。
     notes: {
-      ja: ["受付中にお送りいただいたご依頼が対象です", "締切は2026年12月10日 23:59（JST）です"],
-      en: ["Applies to requests sent while commissions are open.", "Deadline: December 10, 2026 at 23:59 (JST)."]
+      ja: ["受付中にお送りいただいたご依頼が対象です", "締切は2026年12月11日 23:59（JST）です"],
+      en: ["Applies to requests sent while commissions are open.", "Deadline: December 11, 2026 at 23:59 (JST)."]
     }
   }
 };
